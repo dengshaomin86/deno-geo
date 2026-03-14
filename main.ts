@@ -40,12 +40,16 @@ Deno.serve(async (req) => {
     const message = `你好！我已经收到 Cloudflare 从 ${colo} 机房传来的数据。
 你在 ${country} 的 ${city}，现在边缘节点处理时间是 ${timestamp}。`;
 
+    console.log(`post data: ${JSON.stringify(data)}`);
+
     return new Response(message);
   }
 
   // 1. 获取边缘节点注入的地理位置 (Deno Deploy 提供)
   const city = req.headers.get("cf-ipcity") || "神秘城市";
   const country = req.headers.get("cf-ipcountry") || "未知国度";
+
+  console.log(`${req.method}: ${req.url}`);
 
   return new Response(`请通过 Cloudflare 节点访问我。\n你好，来自 ${city} (${country}) 的朋友！`, { status: 403 });
 });
